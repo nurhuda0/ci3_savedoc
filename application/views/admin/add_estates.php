@@ -20,15 +20,15 @@
 
     <form enctype="multipart/form-data" class="jNice" accept-charset="utf-8" method="post" action="<?php echo site_url('admin/add_estates'); ?>">
         <fieldset>
-            <label>Title * : </label>
+            <label>Title : </label>
             <input type="text" class="text-long" value="" name="title" required>
-
+            <br><br>
             <label>Description : </label>
             <textarea class="mceEditor" rows="10" cols="40" name="description"></textarea>
-
+            <br><br>
             <label>Image : </label>
             <input type="file" multiple="" name="images[]">
-
+            <br><br>
             <button class="button-submit" type="submit" name="save">Save</button>
         </fieldset>
     </form>

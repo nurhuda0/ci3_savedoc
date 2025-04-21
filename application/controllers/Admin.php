@@ -14,7 +14,7 @@ class Admin extends CI_Controller
 
     public function add_estates()
     {
-        $data['page_title'] = "&copy; IDEAL - Administrator - Real State - Add Real Estate";
+        $data['page_title'] = "Upload your Images";
         $data['main_content'] = 'admin/add_estates';
 
         if ($this->input->post() !== FALSE) {
