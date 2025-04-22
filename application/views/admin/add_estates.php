@@ -32,6 +32,46 @@
             <button class="button-submit" type="submit" name="save">Save</button>
         </fieldset>
     </form>
+
+    <h2>Images List</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Upload Date</th> <!-- New column for Upload Date -->
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php if (!empty($estates)): ?>
+                <?php foreach ($estates as $estate): ?>
+                    <tr>
+                        <td><?php echo htmlspecialchars($estate['id']); ?></td>
+                        <td><?php echo htmlspecialchars($estate['title']); ?></td>
+                        <td><?php echo htmlspecialchars($estate['created_at']); ?></td> <!-- Displaying created_at -->
+                        <td>
+                            <button onclick="downloadEstate(<?php echo $estate['id']; ?>)" class="button-download">Download</button>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <tr>
+                    <td colspan="4">No estates found.</td>
+                </tr>
+            <?php endif; ?>
+
+            <?php if ($this->session->flashdata('error_msg')): ?>
+                <div class="alert alert-danger"><?php echo $this->session->flashdata('error_msg'); ?></div>
+            <?php endif; ?>
+        </tbody>
+    </table>
+
+    <script>
+        function downloadEstate(id) {
+            window.location.href = "<?php echo site_url('admin/download_estate/'); ?>" + id;
+        }
+    </script>
 </body>
 
 </html>

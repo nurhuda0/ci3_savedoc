@@ -20,4 +20,17 @@ class Admin_model extends CI_Model
 
         return $this->db->insert('estates', $data);
     }
+
+    public function get_estates()
+    {
+        $query = $this->db->get('estates');
+        return $query->result_array(); // Return the result as an array
+    }
+
+    public function get_estate_by_id($id)
+    {
+        $this->db->where('id', $id);
+        $query = $this->db->get('estates');
+        return $query->row_array(); // Return a single row as an associative array
+    }
 }

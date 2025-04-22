@@ -17,6 +17,9 @@ class Admin extends CI_Controller
         $data['page_title'] = "Upload your Images";
         $data['main_content'] = 'admin/add_estates';
 
+        // Fetch existing estates from the database
+        $data['estates'] = $this->admin_model->get_estates();
+
         if ($this->input->post() !== FALSE) {
             $this->load->library('form_validation');
             $this->form_validation->set_rules('title', 'Career Title', 'trim|required');
@@ -73,5 +76,42 @@ class Admin extends CI_Controller
         }
 
         return $images;
+    }
+
+    public function download_estate($id)
+    {
+        // Fetch the estate details from the database
+        $estate = $this->admin_model->get_estate_by_id($id);
+
+        if ($estate) {
+            // Split the image names into an array
+            $image_names = explode(',', $estate['image_names']);
+
+            // Loop through each image and serve it for download
+            foreach ($image_names as $image_name) {
+                $file_path = './uploads/' . $image_name;
+                if (file_exists($file_path)) {
+                    // Set headers to force download
+                    header('Content-Description: File Transfer');
+                    header('Content-Type: application/octet-stream');
+                    header('Content-Disposition: attachment; filename="' . basename($file_path) . '"');
+                    header('Expires: 0');
+                    header('Cache-Control: must-revalidate');
+                    header('Pragma: public');
+                    header('Content-Length: ' . filesize($file_path));
+                    flush(); // Flush system output buffer
+                    readfile($file_path);
+                    exit; // Exit after the first file download
+                } else {
+                    // Handle the case where the file does not exist
+                    $this->session->set_flashdata('error_msg', 'File not found: ' . $image_name);
+                    redirect('admin/add_estates');
+                }
+            }
+        } else {
+            // Handle the case where the estate does not exist
+            $this->session->set_flashdata('error_msg', 'Estate not found.');
+            redirect('admin/add_estates');
+        }
     }
 }
